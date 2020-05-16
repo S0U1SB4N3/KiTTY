@@ -2473,6 +2473,10 @@ void RunCmd( HWND hwnd ) {
 	
 // Gestion de commandes a distance
 static char * RemotePath = NULL ;
+char * GetRemotePath() { return RemotePath ; }
+/* Sauvegarde le répertoire distant dans la variable RemotePath 
+pw() { printf "\033]0;__pw:`pwd`\007" ; }
+*/
 /* Execution de commande en local
 cmd()
 {
@@ -5147,6 +5151,9 @@ void LoadParameters( void ) {
 			while( FileExtension[strlen(FileExtension)-1]==' ' ) { FileExtension[strlen(FileExtension)-1] = '\0' ; }
 		}				
 	}
+	if( ReadParameter( INIT_SECTION, "hostkeyextension", buffer ) ) {
+		if( strlen(buffer) > 0 ) { SetHostKeyExtension(buffer) ; }
+	}
 	if( ReadParameter( INIT_SECTION, "KiPP", buffer ) != 0 ) {
 		if( decryptstring( buffer, MASTER_PASSWORD ) ) ManagePassPhrase( buffer ) ;
 	}
@@ -5367,7 +5374,7 @@ void InitWinMain( void ) {
 	CreateFileAssoc() ;
 	SetADBFlag(0) ;
 #else
-	if( !RegTestKey(HKEY_CLASSES_ROOT,"kitty.connect.1") ) { CreateFileAssoc() ; }
+	//if( !RegTestKey(HKEY_CLASSES_ROOT,"kitty.connect.1") ) { CreateFileAssoc() ; }
 #endif
 
 	// Initialisation de la version binaire
